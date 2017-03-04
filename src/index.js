@@ -7,8 +7,7 @@ import configureStore from './store/configureStore';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 //require('./favicon.ico'); // Tell webpack to load favicon.ico
 //import 'font-awesome/css/font-awesome.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+//import 'bootstrap/dist/css/bootstrap.css';
 import { syncHistoryWithStore } from 'react-router-redux';
 
 const store = configureStore();
@@ -18,8 +17,6 @@ const history = syncHistoryWithStore(browserHistory, store);
 injectTapEventPlugin();
 render(
   <Provider store={store}>
-    <MuiThemeProvider>
-      <Router history={history} routes={routes} />
-    </MuiThemeProvider>
+    <Router history={history} routes={routes} />
   </Provider>, document.getElementById('app')
 );

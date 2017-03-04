@@ -6,7 +6,7 @@ export default (
     <div>
         <Route path="/" component={App}>
             <IndexRoute component={Flight} />
-            <Route path="/test" component={Flight} />
+            <Route path="/flight" component={Flight} />
         </Route>
     </div>
 );

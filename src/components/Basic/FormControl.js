@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
 import validator from '../../lib/validator';
+import { FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+import Label from './Label';
 
 class Textbox extends React.Component {
     constructor(props) {
@@ -19,9 +20,7 @@ class Textbox extends React.Component {
         }
     }
     change = (e) => {
-        this.setState({
-            value: e.target.value
-        });
+        this.setState({ value: e.target.value });
         this.setState({ error: validator.validate(this.props, e.target.value) });
     }
     blur = (e) => {
@@ -32,25 +31,22 @@ class Textbox extends React.Component {
     }
     render() {
         const s = this.state;
-        const p = this.props;
-        return (<TextField
-            value={s.value}
-            hintText={p.placeholder}
-            floatingLabelText={p.label}
-            errorText={s.error}
-            type={p.password ? "password" : "text"}
-            multiLine={p.rows > 1}
-            rows={p.rows}
-            rowsMax={p.rows}
-            disabled={p.disabled}
-            onBlur={this.blur}
-            onChange={this.change}
-        />);
+        const { dispatch, error, info, ...p } = this.props;
+        return (
+            <div>
+                <FormGroup controlId={p.id || p.name} validationState={error && "error"}>
+                    <Label text={p.label} required={p.required} info={info} />
+                    <FormControl id={p.id || p.name} name={p.name} onChange={this.change} onBlur={this.blur} {...p} value={s.value} />
+                    {error && <HelpBlock>{error}</HelpBlock>}
+                </FormGroup>
+            </div>
+        );
     }
 }
 Textbox.propTypes = {
     name: PropTypes.string.isRequired,
     error: PropTypes.string,
+    info: PropTypes.string,
     value: PropTypes.string,
     required: PropTypes.bool,
     validator: PropTypes.func,
@@ -63,3 +59,4 @@ const mapStateToProps = (state, props) => {
     };
 };
 export default connect(mapStateToProps)(Textbox);
+
