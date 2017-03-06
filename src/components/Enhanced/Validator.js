@@ -6,7 +6,6 @@ class Textbox extends React.Component {
     componentWillReceiveProps(newProps) {
         if (newProps.validate) {
             let focusComponent = null;
-            console.log("heloo")
             focusComponent = this.explorChilds(newProps.children, newProps);
             if (focusComponent) {
                 //console.log(focusComponent);
@@ -40,7 +39,7 @@ class Textbox extends React.Component {
                 childProps = component.props;
             }
             //to store control value in store, it need atleast a name
-            if (childProps.name) {
+            if (childProps && childProps.name) {
                 const name = childProps.name;
                 const error = validator.validate(childProps, props.values && props.values[name]);
                 if (error && !focusComponent)

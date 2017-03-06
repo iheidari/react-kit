@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import validator from '../../lib/validator';
-import { Checkbox as BsCheckbox, FormGroup } from 'react-bootstrap';
+import { FormGroup, Radio, HelpBlock } from 'react-bootstrap';
+import Label from './Label';
 import Info from './Info';
 
-class Checkbox extends React.Component {
+class RadioButtons extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,29 +20,35 @@ class Checkbox extends React.Component {
             this.setState({ error: newProps.error });
         }
     }
-    change = () => {
-        const value = !(this.state.value);
+    change = (e) => {
+        const value = e.target.name;
         const error = validator.validate(this.props, value);
         this.setState({ value, error });
-
         if (value != this.props.value || error != this.props.error)
             this.props.dispatch({ type: "FORM", fieldName: this.props.name, value, error });
     }
     render() {
         const s = this.state;
         const { dispatch, error, info, ...p } = this.props;
+        if (!p.items || p.items.lenght === 0) return null;
+        let toRet = [];
+        for (let i = 0; i < p.items.length; i++) {
+            toRet.push(
+                <Radio inline={p.inline} onChange={this.change} checked={s.value === p.items[i].value}
+                    key={p.items[i].value} name={p.items[i].value}>
+                    {p.items[i].text}&nbsp;<Info text={p.items[i].info} position={p.inline && "top"} />
+                </Radio>);
+        }
         return (
             <FormGroup controlId={p.id || p.name} validationState={error && "error"}>
-                <BsCheckbox checked={s.value} onChange={this.change} {...p}>
-                    {error && <span className="text-danger">{error} </span>}
-                    {p.label}
-                    &nbsp;<Info text={info} />
-                </BsCheckbox>
+                <Label text={p.label} required={p.required} info={info} />
+                {toRet}
+                {error && <HelpBlock>{error}</HelpBlock>}
             </FormGroup>
         );
     }
 }
-Checkbox.propTypes = {
+RadioButtons.propTypes = {
     name: React.PropTypes.string.isRequired,
     value: React.PropTypes.string,
     error: React.PropTypes.string,
@@ -54,4 +61,4 @@ const mapStateToProps = (state, props) => {
         error: state.form && state.form.error && state.form.error[props.name],
     };
 };
-export default connect(mapStateToProps)(Checkbox);
+export default connect(mapStateToProps)(RadioButtons);
