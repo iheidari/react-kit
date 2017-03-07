@@ -8,10 +8,6 @@ class Textbox extends React.Component {
             let focusComponent = null;
             focusComponent = this.explorChilds(newProps.children, newProps);
             if (focusComponent) {
-                //console.log(focusComponent);
-                //console.log(document.getElementsById(focusComponent));
-                //console.log(document.getElementsById(focusComponent));
-
                 const element = document.getElementsByName(focusComponent);
                 if (element.length > 0)
                     window.setTimeout(function () {

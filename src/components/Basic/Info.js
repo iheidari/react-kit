@@ -10,5 +10,5 @@ const Info = ({ text, position }) =>
 Info.propTypes = {
     text: React.PropTypes.string,
     position: React.PropTypes.string
-}
+};
 export default Info;

@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import validator from '../../lib/validator';
+import validator from '../../../lib/validator';
 import { FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
-import Label from './Label';
+import Label from '../Label';
 
 class Textbox extends React.Component {
     constructor(props) {

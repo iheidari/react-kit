@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import validator from '../../lib/validator';
-import { FormGroup, FormControl, Radio, HelpBlock } from 'react-bootstrap';
-import Label from './Label';
-import Info from './Info';
+import validator from '../../../lib/validator';
+import { FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+import Label from '../Label';
 
 class Options extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: props.value || false
+            value: props.value || (props.multiple ? [] : undefined)
         };
     }
     componentWillReceiveProps(newProps) {
@@ -21,8 +20,23 @@ class Options extends React.Component {
         }
     }
     change = (e) => {
-        console.log(e)
-        const value = e.target.value;
+        let value;
+        if (this.props.multiple) {
+            let opts = [], opt;
+            for (let i = 0; i < e.target.options.length; i++) {
+                if (this.props.placeholder && i === 0)
+                    continue;
+                opt = e.target.options[i];
+                if (opt.selected) {
+                    opts.push(opt.value);
+                }
+            }
+            value = opts.length ? opts : undefined;
+        }
+        else {
+            value = e.target.value === "" ? undefined : e.target.value;
+
+        }
         const error = validator.validate(this.props, value);
         this.setState({ value, error });
         if (value != this.props.value || error != this.props.error)
@@ -30,21 +44,21 @@ class Options extends React.Component {
     }
     render() {
         const s = this.state;
-        const { dispatch, error, info, ...p } = this.props;
-        if (!p.items || p.items.lenght === 0) return null;
+        const { dispatch, error, info, items, ...p } = this.props;
+        if (!items || items.lenght === 0) return null;
         let toRet = [];
         if (p.placeholder)
             toRet.push(<option value="" key="">{p.placeholder}</option>);
-        for (let i = 0; i < p.items.length; i++) {
+        for (let i = 0; i < items.length; i++) {
             toRet.push(
-                <option key={p.items[i].value} value={p.items[i].value}>
-                    {p.items[i].text}
+                <option key={items[i].value} value={items[i].value}>
+                    {items[i].text}
                 </option>);
         }
         return (
             <FormGroup controlId={p.id || p.name} validationState={error && "error"}>
                 <Label text={p.label} required={p.required} info={info} />
-                <FormControl componentClass="select" onChange={this.change} multiple>
+                <FormControl componentClass="select" onChange={this.change} value={s.value} multiple={p.multiple} {...p}>
                     {toRet}
                 </FormControl>
                 {error && <HelpBlock>{error}</HelpBlock>}
@@ -54,10 +68,13 @@ class Options extends React.Component {
 }
 Options.propTypes = {
     name: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string,
+    value: React.PropTypes.array,
     error: React.PropTypes.string,
+    placeholder: React.PropTypes.string,
     info: React.PropTypes.string,
     dispatch: React.PropTypes.func,
+    items: React.PropTypes.array,
+    multiple: React.PropTypes.bool,
 };
 const mapStateToProps = (state, props) => {
     return {
@@ -66,19 +83,3 @@ const mapStateToProps = (state, props) => {
     };
 };
 export default connect(mapStateToProps)(Options);
-{/*
-        <FormGroup controlId="formControlsSelect">
-      <ControlLabel>Select</ControlLabel>
-      <FormControl componentClass="select" placeholder="select">
-        <option value="select">select</option>
-        <option value="other">...</option>
-      </FormControl>
-    </FormGroup>
-    <FormGroup controlId="formControlsSelectMultiple">
-      <ControlLabel>Multiple select</ControlLabel>
-      <FormControl componentClass="select" multiple>
-        <option value="select">select (multiple)</option>
-        <option value="other">...</option>
-      </FormControl>
-    </FormGroup>
-*/}

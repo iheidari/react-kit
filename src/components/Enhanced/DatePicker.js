@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Datepicker from './Datepicker/Datepicker';
-import { FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+import { FormGroup, HelpBlock } from 'react-bootstrap';
 import Label from '../Basic/Label';
 import validator from '../../lib/validator';
 

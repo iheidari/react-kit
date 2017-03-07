@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import FormControl from '../components/Basic/FormControl';
+import TextBox from '../components/Basic/TextBox';
+import EmailBox from '../components/Enhanced/EmailBox';
 import Checkbox from '../components/Basic/Checkbox';
 import RadioButtons from '../components/Basic/RadioButtons';
-import Options from '../components/Basic/Options';
+import DropDown from '../components/Basic/DropDown';
+import ListBox from '../components/Basic/ListBox';
 import Validator from '../components/Enhanced/Validator';
 import DatePicker from '../components/Enhanced/DatePicker';
 
@@ -16,12 +18,12 @@ class Flight extends React.Component {
                     <Validator name="myForm">
                         <div className="row">
                             <div className="col-md-6">
-                                <FormControl name="FullName" label="Name" type="text" required placeholder="Enter your full name" />
+                                <TextBox name="FullName" label="Name" required placeholder="Enter your full name" />
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-6">
-                                <FormControl name="Email" label="Email" type="email" required />
+                                <EmailBox name="Email" label="Email"  required />
                             </div>
                         </div>
                         <div className="row">
@@ -47,7 +49,7 @@ class Flight extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col-md-6">
-                                <Options name="options1" label="Radio Box" placeholder="select..." items={
+                                <ListBox name="options1" label="Radio Box" placeholder="select..." items={
                                     [
                                         { text: "Item 1", value: "item1" },
                                         { text: "Item 2", value: "item2" },
@@ -59,7 +61,6 @@ class Flight extends React.Component {
                         <Button onClick={this.props.onSubmit}>Default</Button>
                     </Validator>
                 </form>
-
             </div>
         );
     }
@@ -67,6 +68,6 @@ class Flight extends React.Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         onSubmit: () => dispatch({ type: "VALIDATE", validate: true })
-    }
+    };
 };
 export default connect(null, mapDispatchToProps)(Flight);

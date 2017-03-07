@@ -43,7 +43,7 @@ class Checkbox extends React.Component {
 }
 Checkbox.propTypes = {
     name: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string,
+    value: React.PropTypes.bool,
     error: React.PropTypes.string,
     info: React.PropTypes.string,
     dispatch: React.PropTypes.func,

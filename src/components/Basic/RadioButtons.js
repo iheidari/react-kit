@@ -9,7 +9,7 @@ class RadioButtons extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: props.value || false
+            value: props.value || null
         };
     }
     componentWillReceiveProps(newProps) {
@@ -40,7 +40,7 @@ class RadioButtons extends React.Component {
                 </Radio>);
         }
         return (
-            <FormGroup controlId={p.id || p.name} validationState={error && "error"}>
+            <FormGroup controlId={p.id || p.name} validationState={error && "error"} name={p.name}>
                 <Label text={p.label} required={p.required} info={info} />
                 {toRet}
                 {error && <HelpBlock>{error}</HelpBlock>}
