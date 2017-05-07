@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import validator from '../../lib/validator';
 
-class Textbox extends React.Component {
+class Validator extends React.Component {
     componentWillReceiveProps(newProps) {
         if (newProps.validate) {
             let focusComponent = null;
@@ -59,4 +59,4 @@ const mapStatetoProps = (state) => {
         //result: state.validator && state.validator[props.name] && state.validator[props.name].result
     });
 };
-export default connect(mapStatetoProps)(Textbox);
+export default connect(mapStatetoProps)(Validator);
